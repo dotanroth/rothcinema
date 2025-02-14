@@ -11,7 +11,16 @@
                 document.getElementById("scanButton").addEventListener("click", async () => {
                     try {
                         await reader.scan();
-                        reader.onreading = event => {
+                        reader.reader.onreading = event => {
+    console.log("התקבל אירוע קריאה");
+    for (const record of event.message.records) {
+        console.log("סוג רשומה:", record.recordType);
+        console.log("קידוד:", record.encoding);
+        console.log("נתונים גולמיים:", record.data);
+        console.log("תוכן מפוענח:", new TextDecoder().decode(record.data));
+    }
+};
+ = event => {
                             const decoder = new TextDecoder();
                             for (const record of event.message.records) {
                                 const cardId = decoder.decode(record.data);
