@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בודק כרטיסי NFC</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if ("NDEFReader" in window) {
+                const reader = new NDEFReader();
+                document.getElementById("scanButton").addEventListener("click", async () => {
+                    try {
+                        await reader.scan();
+                        reader.onreading = event => {
+                            const decoder = new TextDecoder();
+                            for (const record of event.message.records) {
+                                const cardId = decoder.decode(record.data);
+                                checkCard(cardId);
+                            }
+                        };
+                        alert("הפעלת סריקה, הצמד כרטיס NFC");
+                    } catch (error) {
+                        alert("שגיאה בסריקה: " + error);
+                    }
+                });
+            } else {
+                alert("הדפדפן שלך אינו תומך ב-NFC");
+            }
+        });
+
+        function checkCard(cardId) {
+            const validCards = ["123123", "1234", "11335577", "Yr191261", "123", "4567", "4321", "1245", "2812"];
+            if (validCards.includes(cardId)) {
+                alert("כרטיס תקף: " + cardId);
+            } else {
+                alert("כרטיס לא מוכר");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>בודק כרטיסי NFC</h1>
+    <button id="scanButton">סרוק כרטיס NFC</button>
+</body>
+</html>
