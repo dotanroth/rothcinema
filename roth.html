@@ -19,14 +19,18 @@
             font-size: 24px;
             padding: 15px 30px;
             margin-top: 30px;
-            background-color: black; /* הכפתור שחור */
+            background-color: black;
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #333; /* כשהעכבר מעל הכפתור */
+            background-color: #333;
+        }
+        #status {
+            font-size: 50px;
+            margin-top: 20px;
         }
     </style>
     <script>
@@ -41,10 +45,10 @@
                             for (const record of event.message.records) {
                                 const cardId = decoder.decode(record.data).trim();
                                 console.log("קוד שנקרא:", cardId);
-                                redirectUser(cardId);
+                                checkCard(cardId);
                             }
                         };
-                        alert("הפעלת סריקה, הצמד כרטיס NFC");
+                        alert("יש להצמיד כרטיס NFC");
                     } catch (error) {
                         alert("שגיאה בסריקה: " + error);
                     }
@@ -54,7 +58,7 @@
             }
         });
 
-        function redirectUser(cardId) {
+        function checkCard(cardId) {
             const urls = {
                 "11335577": "https://sites.google.com/view/roth-cinema/home",
                 "1234": "https://google.com",
@@ -62,11 +66,20 @@
                 "4321": "https://wikipedia.org"
             };
 
+            let status = document.getElementById("status");
+
             if (urls[cardId]) {
-                alert("מעביר לכתובת: " + urls[cardId]);
-                window.location.href = urls[cardId];
+                status.innerHTML = "✅";
+                status.style.color = "green";
+                setTimeout(() => {
+                    window.location.href = urls[cardId];
+                }, 1000);
             } else {
-                alert("קוד לא מוכר: " + cardId);
+                status.innerHTML = "❌";
+                status.style.color = "red";
+                setTimeout(() => {
+                    status.innerHTML = "";
+                }, 2000);
             }
         }
     </script>
@@ -74,5 +87,8 @@
 <body>
     <h1>יש להצמיד כרטיס רוט סינמה</h1>
     <button id="scanButton">לסריקה לחץ עלי</button>
+    <div id="status"></div>
 </body>
 </html>
+
+
