@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רוט סינמה - סריקת NFC</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            direction: rtl;
+        }
+        h1 {
+            font-size: 32px;
+            margin-top: 50px;
+        }
+        button {
+            font-size: 24px;
+            padding: 15px 30px;
+            margin-top: 30px;
+            background-color: black; /* הכפתור שחור */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #333; /* כשהעכבר מעל הכפתור */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if ("NDEFReader" in window) {
+                const reader = new NDEFReader();
+                document.getElementById("scanButton").addEventListener("click", async () => {
+                    try {
+                        await reader.scan();
+                        reader.onreading = event => {
+                            const decoder = new TextDecoder();
+                            for (const record of event.message.records) {
+                                const cardId = decoder.decode(record.data).trim();
+                                console.log("קוד שנקרא:", cardId);
+                                redirectUser(cardId);
+                            }
+                        };
+                        alert("הפעלת סריקה, הצמד כרטיס NFC");
+                    } catch (error) {
+                        alert("שגיאה בסריקה: " + error);
+                    }
+                });
+            } else {
+                alert("הדפדפן שלך אינו תומך ב-NFC");
+            }
+        });
+
+        function redirectUser(cardId) {
+            const urls = {
+                "11335577": "https://sites.google.com/view/roth-cinema/home",
+                "1234": "https://google.com",
+                "5678": "https://youtube.com",
+                "4321": "https://wikipedia.org"
+            };
+
+            if (urls[cardId]) {
+                alert("מעביר לכתובת: " + urls[cardId]);
+                window.location.href = urls[cardId];
+            } else {
+                alert("קוד לא מוכר: " + cardId);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>יש להצמיד כרטיס רוט סינמה</h1>
+    <button id="scanButton">לסריקה לחץ עלי</button>
+</body>
+</html>
