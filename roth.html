@@ -60,15 +60,12 @@
 
         function checkCard(cardId) {
             const urls = {
-                "11335577": "https://sites.google.com/view/roth-cinema/home",
-                "1234": "https://google.com",
-                "5678": "https://youtube.com",
-                "4321": "https://wikipedia.org"
+                "11335577": "https://sites.google.com/view/roth-cinema/home"
             };
 
             let status = document.getElementById("status");
 
-            if (urls[cardId]) {
+            if (cardId in urls) {
                 status.innerHTML = "✅";
                 status.style.color = "green";
                 setTimeout(() => {
@@ -90,5 +87,3 @@
     <div id="status"></div>
 </body>
 </html>
-
-
