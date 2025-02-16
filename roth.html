@@ -34,42 +34,43 @@
         }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            if ("NDEFReader" in window) {
-                const reader = new NDEFReader();
-                document.getElementById("scanButton").addEventListener("click", async () => {
-                    try {
-                        await reader.scan();
-                        reader.onreading = event => {
-                            const decoder = new TextDecoder();
-                            for (const record of event.message.records) {
-                                const cardId = decoder.decode(record.data).trim();
-                                console.log("קוד שנקרא:", cardId);
-                                checkCard(cardId);
-                            }
-                        };
-                        alert("יש להצמיד כרטיס NFC");
-                    } catch (error) {
-                        alert("שגיאה בסריקה: " + error);
-                    }
-                });
-            } else {
+        async function startScan() {
+            if (!("NDEFReader" in window)) {
                 alert("הדפדפן שלך אינו תומך ב-NFC");
+                return;
             }
-        });
+
+            const reader = new NDEFReader();
+            try {
+                await reader.scan();
+                reader.onreading = event => {
+                    const decoder = new TextDecoder();
+                    let cardId = "";
+                    for (const record of event.message.records) {
+                        cardId = decoder.decode(record.data).trim();
+                    }
+                    console.log("קוד שנקרא:", cardId);
+                    checkCard(cardId);
+                };
+            } catch (error) {
+                alert("שגיאה בסריקה: " + error);
+            }
+        }
 
         function checkCard(cardId) {
-            const urls = {
-                "11335577": "https://sites.google.com/view/roth-cinema/home"
-            };
+            const validCodes = [
+                "123123", "1234", "11335577", "Yr191261", 
+                "123", "4567", "4321", "1245", "2812"
+            ];
+            const redirectUrl = "https://sites.google.com/view/roth-cinema/home";
 
             let status = document.getElementById("status");
 
-            if (cardId in urls) {
+            if (validCodes.includes(cardId)) {
                 status.innerHTML = "✅";
                 status.style.color = "green";
                 setTimeout(() => {
-                    window.location.href = urls[cardId];
+                    window.location.href = redirectUrl;
                 }, 1000);
             } else {
                 status.innerHTML = "❌";
@@ -83,7 +84,7 @@
 </head>
 <body>
     <h1>יש להצמיד כרטיס רוט סינמה</h1>
-    <button id="scanButton">לסריקה לחץ עלי</button>
+    <button id="scanButton" onclick="startScan()">לסריקה לחץ עלי</button>
     <div id="status"></div>
 </body>
 </html>
