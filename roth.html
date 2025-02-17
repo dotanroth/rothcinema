@@ -60,7 +60,8 @@
         function checkCard(cardId) {
             const validCodes = [
                 "123123", "1234", "11335577", "Yr191261", 
-                "123", "4567", "4321", "1245", "2812"
+                "123", "4567", "4321", "1245", "2812", 
+                "6479", "4573", "7465"  // הוספנו את הסיסמה החדשה כאן
             ];
             const redirectUrl = "https://sites.google.com/view/roth-cinema/home";
 
@@ -81,17 +82,14 @@
             }
         }
 
-        // פונקציה להפעיל את הסריקה עבור מכשירים עם iOS
         function startScanForIphone() {
             if (window.NFCReader) {
-                // לקוד NFC ב-iPhone
                 startScan();
             } else {
                 alert("הדפדפן שלך לא תומך ב-NFC או שהמכשיר שלך לא תומך בטכנולוגיה.");
             }
         }
 
-        // בודק אם NFC נתמך במכשיר, ומפעיל את הסריקה בהתאם
         if ("NDEFReader" in window) {
             window.addEventListener("load", function() {
                 const scanButton = document.getElementById("scanButton");
