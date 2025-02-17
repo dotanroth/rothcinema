@@ -49,57 +49,73 @@
     <input type="text" id="verification-code" placeholder="הזן קוד אימות" />
     <button onclick="verifyCode()">אמת קוד</button>
 
-    <!-- טענת Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    
+    <!-- טענת Firebase SDK (גרסה 9 ומעלה) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // בדיקה אם Firebase נטען
-            if (typeof firebase === "undefined") {
-                console.error("Firebase לא נטען כראוי.");
-                return;
-            }
+        // הגדרת Firebase עם המפתחות האישיים שלך
+        import { initializeApp } from "firebase/app";
+        import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBGi0K3-osTcGndfB478d9pJolTWW95m04",
+            authDomain: "roth-cinema-71e86.firebaseapp.com",
+            projectId: "roth-cinema-71e86",
+            storageBucket: "roth-cinema-71e86.firebasestorage.app",
+            messagingSenderId: "862675544760",
+            appId: "1:862675544760:web:732d89dcdf0a73164de24d",
+            measurementId: "G-7SLFMNK3LF"
+        };
 
-            // הגדרת Firebase
-            const firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_PROJECT_ID.appspot.com",
-                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-                appId: "YOUR_APP_ID"
-            };
-            firebase.initializeApp(firebaseConfig);
+        // אתחול Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-            // יצירת reCAPTCHA
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        });
+        // יצירת reCAPTCHA
+        let recaptchaVerifier;
+        window.onload = () => {
+            recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+                size: 'normal',
+                callback: (response) => {
+                    // reCAPTCHA עבר בהצלחה
+                },
+                'expired-callback': () => {
+                    // reCAPTCHA פג
+                }
+            }, auth);
+        };
 
+        // פונקציה לשליחת קוד האימות
         function sendVerificationCode() {
-            let phoneNumber = document.getElementById('phone-number').value;
-            let appVerifier = window.recaptchaVerifier;
-            
-            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+            const phoneNumber = document.getElementById('phone-number').value;
+            const appVerifier = recaptchaVerifier;
+
+            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
                 .then((confirmationResult) => {
                     window.confirmationResult = confirmationResult;
                     alert("קוד נשלח בהצלחה!");
                 })
                 .catch((error) => {
                     console.error("שגיאה בשליחת קוד:", error);
+                    alert("הייתה שגיאה בשליחת הקוד, אנא נסה שנית.");
                 });
         }
 
+        // פונקציה לאימות הקוד
         function verifyCode() {
-            let code = document.getElementById('verification-code').value;
+            const code = document.getElementById('verification-code').value;
             window.confirmationResult.confirm(code)
                 .then((result) => {
+                    // אם הקוד נכון
                     alert("המספר אומת בהצלחה!");
                 })
                 .catch((error) => {
+                    // אם הקוד שגוי
                     alert("קוד שגוי, נסה שוב.");
                 });
         }
     </script>
+
 </body>
 </html>
