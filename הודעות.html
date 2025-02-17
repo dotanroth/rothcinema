@@ -49,16 +49,13 @@
     <input type="text" id="verification-code" placeholder="הזן קוד אימות" />
     <button onclick="verifyCode()">אמת קוד</button>
 
-    <!-- טענת Firebase SDK (גרסה 9 ומעלה) -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
+    <!-- טענת Firebase SDK (גרסה ישנה) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
     <script>
         // הגדרת Firebase עם המפתחות האישיים שלך
-        import { initializeApp } from "firebase/app";
-        import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-        
-        const firebaseConfig = {
+        var firebaseConfig = {
             apiKey: "AIzaSyBGi0K3-osTcGndfB478d9pJolTWW95m04",
             authDomain: "roth-cinema-71e86.firebaseapp.com",
             projectId: "roth-cinema-71e86",
@@ -69,34 +66,34 @@
         };
 
         // אתחול Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        firebase.initializeApp(firebaseConfig);
 
         // יצירת reCAPTCHA
-        let recaptchaVerifier;
-        window.onload = () => {
-            recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+        var recaptchaVerifier;
+        window.onload = function() {
+            recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                 size: 'normal',
-                callback: (response) => {
-                    // reCAPTCHA עבר בהצלחה
+                callback: function(response) {
+                    // reCAPTCHA עבד בהצלחה
                 },
-                'expired-callback': () => {
+                'expired-callback': function() {
                     // reCAPTCHA פג
                 }
-            }, auth);
+            });
         };
 
         // פונקציה לשליחת קוד האימות
         function sendVerificationCode() {
-            const phoneNumber = document.getElementById('phone-number').value;
-            const appVerifier = recaptchaVerifier;
+            var phoneNumber = document.getElementById('phone-number').value;
+            var appVerifier = recaptchaVerifier;
 
-            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-                .then((confirmationResult) => {
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then(function(confirmationResult) {
+                    // שומר את התוצאה לאימות מאוחר יותר
                     window.confirmationResult = confirmationResult;
                     alert("קוד נשלח בהצלחה!");
                 })
-                .catch((error) => {
+                .catch(function(error) {
                     console.error("שגיאה בשליחת קוד:", error);
                     alert("הייתה שגיאה בשליחת הקוד, אנא נסה שנית.");
                 });
@@ -104,13 +101,13 @@
 
         // פונקציה לאימות הקוד
         function verifyCode() {
-            const code = document.getElementById('verification-code').value;
+            var code = document.getElementById('verification-code').value;
             window.confirmationResult.confirm(code)
-                .then((result) => {
+                .then(function(result) {
                     // אם הקוד נכון
                     alert("המספר אומת בהצלחה!");
                 })
-                .catch((error) => {
+                .catch(function(error) {
                     // אם הקוד שגוי
                     alert("קוד שגוי, נסה שוב.");
                 });
