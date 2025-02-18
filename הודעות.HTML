@@ -3,116 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>אימות מספר טלפון</title>
+    <title>אימות וואטסאפ</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-        input {
-            padding: 10px;
-            font-size: 18px;
-            margin: 10px 0;
-            width: 300px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #recaptcha-container {
-            margin: 20px 0;
-        }
+        body { text-align: center; font-family: Arial, sans-serif; direction: rtl; background-color: #f4f4f4; margin-top: 50px; }
+        h1 { font-size: 28px; }
+        input { font-size: 18px; padding: 10px; margin: 10px; width: 80%; max-width: 300px; display: block; margin-left: auto; margin-right: auto; }
+        button { font-size: 20px; padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #333; }
     </style>
 </head>
 <body>
+    <h1>אימות באמצעות וואטסאפ</h1>
+    <input type="text" id="phoneNumber" placeholder="הכנס מספר טלפון">
+    <button onclick="sendCode()">שלח קוד</button>
 
-    <h1>אמת את מספר הטלפון שלך</h1>
-    <input type="text" id="phone-number" placeholder="הזן מספר טלפון" />
-    <div id="recaptcha-container"></div>
-    <button onclick="sendVerificationCode()">שלח קוד</button>
-    
-    <br><br>
-    <input type="text" id="verification-code" placeholder="הזן קוד אימות" />
-    <button onclick="verifyCode()">אמת קוד</button>
+    <input type="text" id="codeInput" placeholder="הכנס את הקוד" style="display:none;">
+    <button onclick="verifyCode()" id="verifyButton" style="display:none;">אמת</button>
 
-    <!-- טענת Firebase SDK (גרסה ישנה) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    
     <script>
-        // הגדרת Firebase עם המפתחות האישיים שלך
-        var firebaseConfig = {
-            apiKey: "AIzaSyBGi0K3-osTcGndfB478d9pJolTWW95m04",
-            authDomain: "roth-cinema-71e86.firebaseapp.com",
-            projectId: "roth-cinema-71e86",
-            storageBucket: "roth-cinema-71e86.firebasestorage.app",
-            messagingSenderId: "862675544760",
-            appId: "1:862675544760:web:732d89dcdf0a73164de24d",
-            measurementId: "G-7SLFMNK3LF"
-        };
+        let generatedCode = "";
 
-        // אתחול Firebase
-        firebase.initializeApp(firebaseConfig);
+        function sendCode() {
+            let phone = document.getElementById("phoneNumber").value.trim();
+            if (!phone) {
+                alert("נא להזין מספר טלפון");
+                return;
+            }
 
-        // יצירת reCAPTCHA
-        var recaptchaVerifier;
-        window.onload = function() {
-            recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                size: 'normal',
-                callback: function(response) {
-                    // reCAPTCHA עבד בהצלחה
-                },
-                'expired-callback': function() {
-                    // reCAPTCHA פג
-                }
-            });
-        };
+            // יצירת קוד אקראי
+            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+            
+            // יצירת לינק לשליחת הקוד דרך וואטסאפ
+            let message = `קוד האימות שלך הוא: ${generatedCode}`;
+            let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            
+            // פתיחת וואטסאפ עם הקוד (המשתמש צריך לשלוח את ההודעה)
+            window.location.href = url;
 
-        // פונקציה לשליחת קוד האימות
-        function sendVerificationCode() {
-            var phoneNumber = document.getElementById('phone-number').value;
-            var appVerifier = recaptchaVerifier;
-
-            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-                .then(function(confirmationResult) {
-                    // שומר את התוצאה לאימות מאוחר יותר
-                    window.confirmationResult = confirmationResult;
-                    alert("קוד נשלח בהצלחה!");
-                })
-                .catch(function(error) {
-                    console.error("שגיאה בשליחת קוד:", error);
-                    alert("הייתה שגיאה בשליחת הקוד, אנא נסה שנית.");
-                });
+            // הצגת השדה להזנת הקוד
+            document.getElementById("codeInput").style.display = "block";
+            document.getElementById("verifyButton").style.display = "block";
         }
 
-        // פונקציה לאימות הקוד
         function verifyCode() {
-            var code = document.getElementById('verification-code').value;
-            window.confirmationResult.confirm(code)
-                .then(function(result) {
-                    // אם הקוד נכון
-                    alert("המספר אומת בהצלחה!");
-                })
-                .catch(function(error) {
-                    // אם הקוד שגוי
-                    alert("קוד שגוי, נסה שוב.");
-                });
+            let enteredCode = document.getElementById("codeInput").value.trim();
+            if (enteredCode === generatedCode) {
+                alert("✅ הקוד נכון!");
+            } else {
+                alert("❌ הקוד שגוי, נסה שוב.");
+            }
         }
     </script>
-
 </body>
 </html>
