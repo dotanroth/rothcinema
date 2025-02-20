@@ -98,6 +98,7 @@
         });
 
         document.getElementById("finishButton").onclick = function() {
+            // יצירת פרמטרים מהטופס
             var form = document.getElementById("registrationForm");
             var formData = new FormData(form);
             var queryParams = [];
@@ -105,6 +106,9 @@
                 queryParams.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
             });
             var queryString = queryParams.join("&");
+
+            // נוודא שכולם מועברים כראוי
+            console.log(queryString);
 
             // העברת הנתונים לדף החדש באמצעות פרמטרים ב-URL
             window.location.href = "confirmation.html?" + queryString;
