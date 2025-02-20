@@ -105,6 +105,8 @@
                 queryParams.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
             });
             var queryString = queryParams.join("&");
+
+            // העברת הנתונים לדף החדש באמצעות פרמטרים ב-URL
             window.location.href = "confirmation.html?" + queryString;
         };
     </script>
