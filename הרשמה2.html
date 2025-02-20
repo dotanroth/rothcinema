@@ -3,26 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>פרטי ההרשמה - Root Cinema</title>
+    <title>אישור הרשמה - Root Cinema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        .details {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .details p {
+            font-size: 16px;
+            color: #333;
+            margin: 8px 0;
+        }
+    </style>
 </head>
 <body>
-    <h2>פרטי ההרשמה שלך:</h2>
-    <p><strong>שם פרטי:</strong> <span id="first_name"></span></p>
-    <p><strong>שם משפחה:</strong> <span id="last_name"></span></p>
-    <p><strong>טלפון:</strong> <span id="phone"></span></p>
-    <p><strong>אימייל:</strong> <span id="email"></span></p>
-    <p><strong>סיסמה:</strong> <span id="password"></span></p>
+    <div class="container">
+        <h2>תודה על ההרשמה ל-Root Cinema</h2>
+        <h3>הפרטים שלך:</h3>
+        <div class="details" id="userDetails"></div>
+    </div>
 
     <script>
-        // מקבל את הנתונים מה-URL
-        var urlParams = new URLSearchParams(window.location.search);
+        function getQueryParams() {
+            var params = {};
+            var url = window.location.href;
+            var queryString = url.split('?')[1];
+            var queryArr = queryString.split('&');
 
-        // מציב את הנתונים באלמנטים המתאימים
-        document.getElementById("first_name").textContent = urlParams.get('first_name');
-        document.getElementById("last_name").textContent = urlParams.get('last_name');
-        document.getElementById("phone").textContent = urlParams.get('phone');
-        document.getElementById("email").textContent = urlParams.get('email');
-        document.getElementById("password").textContent = urlParams.get('password');
+            queryArr.forEach(function(param) {
+                var pair = param.split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            });
+
+            return params;
+        }
+
+        var params = getQueryParams();
+        var userDetails = document.getElementById("userDetails");
+        userDetails.innerHTML = `
+            <p><strong>שם פרטי:</strong> ${params.first_name}</p>
+            <p><strong>שם משפחה:</strong> ${params.last_name}</p>
+            <p><strong>טלפון:</strong> ${params.phone}</p>
+            <p><strong>אימייל:</strong> ${params.email}</p>
+        `;
     </script>
 </body>
 </html>
