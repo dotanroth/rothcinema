@@ -3,24 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מידע שהוזן</title>
+    <title>תוצאה - Root Cinema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            margin: 50px;
+        }
+        .result {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            width: 80%;
+        }
+        .result p {
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h2>המידע שהוזן</h2>
-    <p><strong>שם פרטי:</strong> <span id="first_name"></span></p>
-    <p><strong>שם משפחה:</strong> <span id="last_name"></span></p>
-    <p><strong>טלפון:</strong> <span id="phone"></span></p>
-    <p><strong>אימייל:</strong> <span id="email"></span></p>
-    <p><strong>סיסמה:</strong> <span id="password"></span></p>
+    <h2>ההרשמה בוצעה בהצלחה!</h2>
+    <div class="result">
+        <p><strong>שם פרטי:</strong> <span id="first_name"></span></p>
+        <p><strong>שם משפחה:</strong> <span id="last_name"></span></p>
+        <p><strong>טלפון:</strong> <span id="phone"></span></p>
+        <p><strong>אימייל:</strong> <span id="email"></span></p>
+        <p><strong>סיסמה:</strong> <span id="password"></span></p>
+    </div>
 
     <script>
-        // קריאת הפרמטרים מה-URL
-        var urlParams = new URLSearchParams(window.location.search);
-        document.getElementById("first_name").textContent = urlParams.get('first_name');
-        document.getElementById("last_name").textContent = urlParams.get('last_name');
-        document.getElementById("phone").textContent = urlParams.get('phone');
-        document.getElementById("email").textContent = urlParams.get('email');
-        document.getElementById("password").textContent = urlParams.get('password');
+        function getQueryParams() {
+            var params = new URLSearchParams(window.location.search);
+            return {
+                first_name: params.get('first_name'),
+                last_name: params.get('last_name'),
+                phone: params.get('phone'),
+                email: params.get('email'),
+                password: params.get('password')
+            };
+        }
+
+        var queryParams = getQueryParams();
+        document.getElementById("first_name").textContent = queryParams.first_name || 'לא הוזן';
+        document.getElementById("last_name").textContent = queryParams.last_name || 'לא הוזן';
+        document.getElementById("phone").textContent = queryParams.phone || 'לא הוזן';
+        document.getElementById("email").textContent = queryParams.email || 'לא הוזן';
+        document.getElementById("password").textContent = queryParams.password || 'לא הוזן';
     </script>
 </body>
 </html>
