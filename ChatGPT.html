@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רוט צ'אט - בית קולנוע</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: url('רוט סינמה.png') no-repeat center center fixed;
+            background-size: cover;
+            padding: 20px;
+            margin: 0;
+            position: relative;
+        }
+
+        #chat-container {
+            width: 50%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.85); /* שקיפות לאחור */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: right;
+            position: relative;
+        }
+
+        #chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .user-message, .bot-message {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px;
+            max-width: 75%;
+        }
+
+        .user-message {
+            background-color: #dcf8c6;
+            align-self: flex-start;
+        }
+
+        .bot-message {
+            background-color: #e5e5ea;
+            align-self: flex-end;
+        }
+
+        input, button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>רוט צ'אט - העוזר שלך לקולנוע!</h2>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="הקלד את שאלתך..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">שלח</button>
+    </div>
+    
+    <script>
+        function generateResponse(userInput) {
+            userInput = userInput.toLowerCase();
+
+            if (/(סרטים|מה.*סרטים|איזה.*סרטים|הסרטים.*היום|סרט.*מוקרן|סרטים.*מציגים|רשימת.*סרטים)/.test(userInput)) {
+                return "הסרטים שמוצגים עכשיו: סוניק 1, 2, 3 | נורם 1, 2, 3 | צעצוע של סיפור 1, 2, 3, 4.";
+            }
+
+            if (/(שעות.*פעילות|מתי.*פתוח|באיזה.*שעות|מתי.*אפשר.*לבוא|מתי.*נפתח|באיזה.*שעה.*הסרטים)/.test(userInput)) {
+                return "שעות הפעילות שלנו הן מ-15:00 עד 19:00. אנחנו פתוחים רק בימי רביעי וחמישי.";
+            }
+
+            if (/(ימים.*פתוחים|באיזה.*יום.*פתוח|מתי.*פתוח|אילו.*ימים.*עובדים|באיזה.*ימים.*סרטים)/.test(userInput)) {
+                return "הקולנוע פתוח בימי רביעי וחמישי בלבד.";
+            }
+
+            if (/(מחיר|כמה.*כרטיס|עלות.*כרטיס|כמה.*עולה|מה.*מחיר)/.test(userInput)) {
+                return "מחיר כרטיס: ילד (4-12) - 20 ₪, נער (12-23) - 25 ₪, מבוגר (23+) - 30 ₪. הנחות ניתנות רק לחברי מועדון.";
+            }
+
+            return "לא מצאתי תשובה מדויקת, אבל אני כאן לעזור! נסה לשאול על שעות פעילות, סרטים או מחירים.";
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("user-input");
+            let chatBox = document.getElementById("chat-box");
+            let userText = input.value.trim();
+            if (userText !== "") {
+                let userMessage = document.createElement("div");
+                userMessage.classList.add("user-message");
+                userMessage.textContent = userText;
+                chatBox.appendChild(userMessage);
+                
+                let botMessage = document.createElement("div");
+                botMessage.classList.add("bot-message");
+                botMessage.textContent = generateResponse(userText);
+                chatBox.appendChild(botMessage);
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+                input.value = "";
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
+
