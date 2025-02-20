@@ -53,24 +53,33 @@
             var params = {};
             var url = window.location.href;
             var queryString = url.split('?')[1];
-            var queryArr = queryString.split('&');
+            if (queryString) {
+                var queryArr = queryString.split('&');
 
-            queryArr.forEach(function(param) {
-                var pair = param.split('=');
-                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-            });
+                queryArr.forEach(function(param) {
+                    var pair = param.split('=');
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                });
+            }
 
             return params;
         }
 
         var params = getQueryParams();
         var userDetails = document.getElementById("userDetails");
-        userDetails.innerHTML = `
-            <p><strong>שם פרטי:</strong> ${params.first_name}</p>
-            <p><strong>שם משפחה:</strong> ${params.last_name}</p>
-            <p><strong>טלפון:</strong> ${params.phone}</p>
-            <p><strong>אימייל:</strong> ${params.email}</p>
-        `;
+
+        // בדיקה אם נתונים קיימים
+        if (params.first_name && params.last_name && params.phone && params.email && params.password) {
+            userDetails.innerHTML = `
+                <p><strong>שם פרטי:</strong> ${params.first_name}</p>
+                <p><strong>שם משפחה:</strong> ${params.last_name}</p>
+                <p><strong>טלפון:</strong> ${params.phone}</p>
+                <p><strong>אימייל:</strong> ${params.email}</p>
+                <p><strong>סיסמה:</strong> ${params.password}</p>
+            `;
+        } else {
+            userDetails.innerHTML = "<p>לא נמצאו פרטי משתמש.</p>";
+        }
     </script>
 </body>
 </html>
