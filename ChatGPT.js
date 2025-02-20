@@ -1,117 +1,56 @@
-<!DOCTYPE html>
-<html lang="he">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT - צ'אט בוט</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .chat-container {
-            width: 90%;
-            max-width: 400px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        .chat-box {
-            height: 400px;
-            overflow-y: auto;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            background: #fff;
-        }
-        .chat-box div {
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            max-width: 75%;
-        }
-        .user {
-            align-self: flex-end;
-            background: #4CAF50;
-            color: white;
-        }
-        .bot {
-            align-self: flex-start;
-            background: #ddd;
-        }
-        .input-container {
-            display: flex;
-            border-top: 1px solid #ccc;
-            background: white;
-            padding: 10px;
-        }
-        input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-        }
-        button {
-            padding: 10px 15px;
-            margin-left: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <h1>ChatGPT - צ'אט בוט</h1>
-    <div class="chat-container">
-        <div class="chat-box" id="chat-box"></div>
-        <div class="input-container">
-            <input type="text" id="user-input" placeholder="הקלד הודעה...">
-            <button onclick="sendMessage()">שלח</button>
-        </div>
-    </div>
+// צ'אט רוט - הכל ב-JavaScript בלבד!
+const API_KEY = "your-api-key-here";  // 🔴 הכנס את ה-API Key שלך כאן!
 
-    <script>
-        const apiKey = "your-api-key-here";  // הכנס את ה-API Key שלך כאן
-        
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
-            if (!userInput) return;
-            
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML += `<div class='user'>${userInput}</div>`;
-            document.getElementById('user-input').value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-            
-            const response = await fetch('https://api.openai.com/v1/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                    model: "text-davinci-003",
-                    prompt: userInput,
-                    max_tokens: 150,
-                    temperature: 0.7,
-                }),
-            });
-            
-            const data = await response.json();
-            const botResponse = data.choices[0].text.trim();
-            chatBox.innerHTML += `<div class='bot'>${botResponse}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    </script>
-</body>
-</html>
+// יצירת אלמנטים דינמיים
+const body = document.body;
+body.style.fontFamily = "Arial, sans-serif";
+body.style.textAlign = "center";
+body.style.backgroundColor = "#f0f0f0";
+body.style.margin = "0";
+body.style.padding = "0";
+
+// כותרת הצ'אט
+const title = document.createElement("h1");
+title.innerText = "צ'אט רוט";
+body.appendChild(title);
+
+// יצירת הקונטיינר של הצ'אט
+const chatContainer = document.createElement("div");
+chatContainer.style.width = "90%";
+chatContainer.style.maxWidth = "400px";
+chatContainer.style.margin = "30px auto";
+chatContainer.style.background = "white";
+chatContainer.style.borderRadius = "10px";
+chatContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+chatContainer.style.overflow = "hidden";
+body.appendChild(chatContainer);
+
+// תיבת הצ'אט
+const chatBox = document.createElement("div");
+chatBox.style.height = "400px";
+chatBox.style.overflowY = "auto";
+chatBox.style.padding = "15px";
+chatBox.style.display = "flex";
+chatBox.style.flexDirection = "column";
+chatBox.style.background = "#fff";
+chatContainer.appendChild(chatBox);
+
+// אזור ההזנה
+const inputContainer = document.createElement("div");
+inputContainer.style.display = "flex";
+inputContainer.style.borderTop = "1px solid #ccc";
+inputContainer.style.background = "white";
+inputContainer.style.padding = "10px";
+chatContainer.appendChild(inputContainer);
+
+// שדה הטקסט
+const userInput = document.createElement("input");
+userInput.type = "text";
+userInput.placeholder = "הקלד הודעה...";
+userInput.style.flex = "1";
+userInput.style.padding = "10px";
+userInput.style.border = "none";
+userInput.style.borderRadius = "5px";
+userInput.style.outline = "none";
+userInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") sendM
