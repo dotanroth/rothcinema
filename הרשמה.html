@@ -63,38 +63,45 @@
         <label>סיסמה (לפחות 4 תווים שהם מספרים או אותיות):</label>
         <input type="password" name="password" id="password" required>
         
-        <button id="submitButton" type="submit">הרשמה</button>
+        <button type="submit">הרשמה</button>
         <!-- כפתור סיום מוסתר בהתחלה -->
-        <button id="finishButton" type="button" onclick="window.location.href='https://sites.google.com/view/roth-cinema/home'" disabled>סיום</button>
+        <button id="finishButton" type="button">סיום</button>
     </form>
 
     <script>
-        document.getElementById("registrationForm").addEventListener("input", function() {
-            var password = document.getElementById("password").value;
+        // פונקציה שנקראת כאשר הטופס נשלח
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // מונע את שליחת הטופס
+
             var firstName = document.querySelector('input[name="first_name"]').value;
             var lastName = document.querySelector('input[name="last_name"]').value;
             var phone = document.querySelector('input[name="phone"]').value;
             var email = document.querySelector('input[name="email"]').value;
-
-            // בדיקת אם כל השדות מלאים והסיסמה תקינה
+            var password = document.getElementById("password").value;
+            
             var passwordPattern = /^[A-Za-z0-9]{4,}$/;
-            var allFieldsFilled = firstName && lastName && phone && email && password;
-            var passwordValid = passwordPattern.test(password);
+
+            if (!passwordPattern.test(password)) {
+                alert("הסיסמה חייבת להיות לפחות 4 תווים (מספרים או אותיות).");
+                return;
+            }
 
             // אם כל השדות מלאים והסיסמה תקינה, נוכל להפעיל את כפתור "סיום"
-            if (allFieldsFilled && passwordValid) {
-                document.getElementById("finishButton").disabled = false;
-                document.getElementById("finishButton").classList.add("active");
-            } else {
-                document.getElementById("finishButton").disabled = true;
-                document.getElementById("finishButton").classList.remove("active");
-            }
-        });
+            document.getElementById("finishButton").style.display = "block";
 
-        // כאשר לוחצים על כפתור "סיום", המשתמש מועבר לדף הרצוי
-        document.getElementById("finishButton").onclick = function() {
-            window.location.href = 'https://sites.google.com/view/roth-cinema/home';
-        };
+            // פעולה שיתבצעו כאשר לוחצים על כפתור "סיום"
+            document.getElementById("finishButton").onclick = function() {
+                // בניית URL עם המידע מהטופס
+                var url = "display.html?first_name=" + encodeURIComponent(firstName) +
+                          "&last_name=" + encodeURIComponent(lastName) +
+                          "&phone=" + encodeURIComponent(phone) +
+                          "&email=" + encodeURIComponent(email) +
+                          "&password=" + encodeURIComponent(password);
+
+                // העברה לדף display.html עם הפרמטרים ב-URL
+                window.location.href = url;
+            };
+        });
     </script>
 </body>
 </html>
