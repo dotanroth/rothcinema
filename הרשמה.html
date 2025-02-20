@@ -91,25 +91,24 @@
             }
         });
 
-        // כאשר לוחצים על כפתור "סיום", המידע יישלח לדף אחר (שיהיה success.html)
+        // כאשר לוחצים על כפתור "סיום", הנתונים יועברו לדף השני
         document.getElementById("finishButton").onclick = function() {
             var firstName = document.querySelector('input[name="first_name"]').value;
             var lastName = document.querySelector('input[name="last_name"]').value;
             var phone = document.querySelector('input[name="phone"]').value;
             var email = document.querySelector('input[name="email"]').value;
-            var password = document.querySelector('input[name="password"]').value;
+            var password = document.getElementById("password").value;
 
-            // בניית ה-URL עם פרמטרים
+            // יוצר URL עם פרמטרים עבור הדף החדש
             var url = 'success.html?first_name=' + encodeURIComponent(firstName) +
                       '&last_name=' + encodeURIComponent(lastName) +
                       '&phone=' + encodeURIComponent(phone) +
                       '&email=' + encodeURIComponent(email) +
                       '&password=' + encodeURIComponent(password);
 
-            // העברת המשתמש לדף עם המידע
+            // מעביר את המשתמש לדף עם הנתונים
             window.location.href = url;
         };
     </script>
 </body>
 </html>
-
