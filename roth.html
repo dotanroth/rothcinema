@@ -1,148 +1,83 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>רוט סינמה - סריקת NFC</title>
+    <title>Root Cinema</title>
     <style>
         body {
-            text-align: center;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            direction: rtl;
+            text-align: center;
+            background: url('רוט סינמה.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
         }
-        h1 {
-            font-size: 32px;
-            margin-top: 50px;
+        .header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: rgba(51, 51, 51, 0.8);
         }
-        button {
-            font-size: 24px;
-            padding: 15px 30px;
-            margin-top: 30px;
-            background-color: black;
-            color: white;
+        .header button {
+            font-size: 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 10px;
             cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            background-color: #007BFF;
+            transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #333;
+        .header button:hover {
+            background-color: #0056b3;
         }
-        #status {
+        .title {
             font-size: 50px;
-            margin-top: 20px;
+            color: black;
+            margin-top: 80px;
+            background: rgba(255, 255, 255, 0.7);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        .help-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 18px;
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            background-color: #28a745;
+            transition: background-color 0.3s;
+        }
+        .help-button:hover {
+            background-color: #218838;
         }
     </style>
-    <script>
-<<<<<<< HEAD
-        document.addEventListener("DOMContentLoaded", () => {
-            if ("NDEFReader" in window) {
-                const reader = new NDEFReader();
-                document.getElementById("scanButton").addEventListener("click", async () => {
-                    try {
-                        await reader.scan();
-                        reader.onreading = event => {
-                            const decoder = new TextDecoder();
-                            for (const record of event.message.records) {
-                                const cardId = decoder.decode(record.data).trim();
-                                console.log("קוד שנקרא:", cardId);
-                                checkCard(cardId);
-                            }
-                        };
-                        alert("יש להצמיד כרטיס NFC");
-                    } catch (error) {
-                        alert("שגיאה בסריקה: " + error);
-                    }
-                });
-            } else {
-=======
-        async function startScan() {
-            if (!("NDEFReader" in window)) {
->>>>>>> 7d8e97be69e9c22f1f49468580b534d5e2359f6f
-                alert("הדפדפן שלך אינו תומך ב-NFC");
-                return;
-            }
-
-<<<<<<< HEAD
-        function checkCard(cardId) {
-            const urls = {
-                "11335577": "https://sites.google.com/view/roth-cinema/home",
-                "1234": "https://google.com",
-                "5678": "https://youtube.com",
-                "4321": "https://wikipedia.org"
-            };
-
-            let status = document.getElementById("status");
-
-            if (urls[cardId]) {
-                status.innerHTML = "✅";
-                status.style.color = "green";
-                setTimeout(() => {
-                    window.location.href = urls[cardId];
-=======
-            const reader = new NDEFReader();
-            try {
-                await reader.scan();
-                reader.onreading = event => {
-                    const decoder = new TextDecoder();
-                    let cardId = "";
-                    for (const record of event.message.records) {
-                        cardId = decoder.decode(record.data).trim();
-                    }
-                    console.log("קוד שנקרא:", cardId);
-                    checkCard(cardId);
-                };
-            } catch (error) {
-                alert("שגיאה בסריקה: " + error);
-            }
-        }
-
-        function checkCard(cardId) {
-            const validCodes = [
-                "123123", "1234", "11335577", "Yr191261", 
-                "123", "4567", "4321", "1245", "2812", 
-                "6479", "4573", "7465"  // הוספנו את הסיסמה החדשה כאן
-            ];
-            const redirectUrl = "https://sites.google.com/view/roth-cinema/home";
-
-            let status = document.getElementById("status");
-
-            if (validCodes.includes(cardId)) {
-                status.innerHTML = "✅";
-                status.style.color = "green";
-                setTimeout(() => {
-                    window.location.href = redirectUrl;
->>>>>>> 7d8e97be69e9c22f1f49468580b534d5e2359f6f
-                }, 1000);
-            } else {
-                status.innerHTML = "❌";
-                status.style.color = "red";
-                setTimeout(() => {
-                    status.innerHTML = "";
-                }, 2000);
-            }
-        }
-
-        function startScanForIphone() {
-            if (window.NFCReader) {
-                startScan();
-            } else {
-                alert("הדפדפן שלך לא תומך ב-NFC או שהמכשיר שלך לא תומך בטכנולוגיה.");
-            }
-        }
-
-        if ("NDEFReader" in window) {
-            window.addEventListener("load", function() {
-                const scanButton = document.getElementById("scanButton");
-                scanButton.onclick = startScanForIphone;
-            });
-        }
-    </script>
 </head>
 <body>
-    <h1>יש להצמיד כרטיס רוט סינמה</h1>
-    <button id="scanButton">לסריקה לחץ עלי</button>
-    <div id="status"></div>
+    <h1 class="title">ברוכים הבאים לרוט סינמה</h1>
+    <div class="header">
+        <button onclick="register()">הרשמה</button>
+        <button onclick="login()">התחברות</button>
+    </div>
+    <button class="help-button" onclick="help()">עזרה</button>
+    
+    <script>
+        function register() {
+            alert("עמוד הרשמה בקרוב");
+        }
+        function login() {
+            window.location.href = "https://dotanroth.github.io/rothcinema/roth.html";
+        }
+        function help() {
+            window.location.href = "https://dotanroth.github.io/rothcinema/ChatGPT.html"; // כתובת האתר לעזרה
+        }
+    </script>
 </body>
 </html>
-
