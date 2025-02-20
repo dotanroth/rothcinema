@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרשמה - Root Cinema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            margin: 50px;
+        }
+        form {
+            display: inline-block;
+            text-align: right;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        #finishButton {
+            background: #28a745;
+            display: none; /* כפתור סיום מוסתר בהתחלה */
+            margin-top: 10px;
+            cursor: not-allowed; /* כפתור חסום בהתחלה */
+        }
+        #finishButton.active {
+            cursor: pointer;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h2>הרשמה ל-Root Cinema</h2>
+    <form id="registrationForm">
+        <label>שם פרטי:</label>
+        <input type="text" name="first_name" required>
+        
+        <label>שם משפחה:</label>
+        <input type="text" name="last_name" required>
+        
+        <label>טלפון:</label>
+        <input type="tel" name="phone" required pattern="[0-9]{10}">
+        
+        <label>אימייל:</label>
+        <input type="email" name="email" required>
+        
+        <label>סיסמה (לפחות 4 תווים שהם מספרים או אותיות):</label>
+        <input type="password" name="password" id="password" required>
+        
+        <button id="submitButton" type="submit">הרשמה</button>
+        <!-- כפתור סיום מוסתר בהתחלה -->
+        <button id="finishButton" type="button" onclick="window.location.href='https://sites.google.com/view/roth-cinema/home'" disabled>סיום</button>
+    </form>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("input", function() {
+            var password = document.getElementById("password").value;
+            var firstName = document.querySelector('input[name="first_name"]').value;
+            var lastName = document.querySelector('input[name="last_name"]').value;
+            var phone = document.querySelector('input[name="phone"]').value;
+            var email = document.querySelector('input[name="email"]').value;
+
+            // בדיקת אם כל השדות מלאים והסיסמה תקינה
+            var passwordPattern = /^[A-Za-z0-9]{4,}$/;
+            var allFieldsFilled = firstName && lastName && phone && email && password;
+            var passwordValid = passwordPattern.test(password);
+
+            // אם כל השדות מלאים והסיסמה תקינה, נוכל להפעיל את כפתור "סיום"
+            if (allFieldsFilled && passwordValid) {
+                document.getElementById("finishButton").disabled = false;
+                document.getElementById("finishButton").classList.add("active");
+            } else {
+                document.getElementById("finishButton").disabled = true;
+                document.getElementById("finishButton").classList.remove("active");
+            }
+        });
+
+        // כאשר לוחצים על כפתור "סיום", המשתמש מועבר לדף הרצוי
+        document.getElementById("finishButton").onclick = function() {
+            window.location.href = 'https://sites.google.com/view/roth-cinema/home';
+        };
+    </script>
+</body>
+</html>
