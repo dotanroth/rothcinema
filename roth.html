@@ -34,52 +34,12 @@
         }
     </style>
     <script>
-<<<<<<< HEAD
-        document.addEventListener("DOMContentLoaded", () => {
-            if ("NDEFReader" in window) {
-                const reader = new NDEFReader();
-                document.getElementById("scanButton").addEventListener("click", async () => {
-                    try {
-                        await reader.scan();
-                        reader.onreading = event => {
-                            const decoder = new TextDecoder();
-                            for (const record of event.message.records) {
-                                const cardId = decoder.decode(record.data).trim();
-                                console.log("קוד שנקרא:", cardId);
-                                checkCard(cardId);
-                            }
-                        };
-                        alert("יש להצמיד כרטיס NFC");
-                    } catch (error) {
-                        alert("שגיאה בסריקה: " + error);
-                    }
-                });
-            } else {
-=======
         async function startScan() {
             if (!("NDEFReader" in window)) {
->>>>>>> 7d8e97be69e9c22f1f49468580b534d5e2359f6f
                 alert("הדפדפן שלך אינו תומך ב-NFC");
                 return;
             }
 
-<<<<<<< HEAD
-        function checkCard(cardId) {
-            const urls = {
-                "11335577": "https://sites.google.com/view/roth-cinema/home",
-                "1234": "https://google.com",
-                "5678": "https://youtube.com",
-                "4321": "https://wikipedia.org"
-            };
-
-            let status = document.getElementById("status");
-
-            if (urls[cardId]) {
-                status.innerHTML = "✅";
-                status.style.color = "green";
-                setTimeout(() => {
-                    window.location.href = urls[cardId];
-=======
             const reader = new NDEFReader();
             try {
                 await reader.scan();
@@ -100,8 +60,7 @@
         function checkCard(cardId) {
             const validCodes = [
                 "123123", "1234", "11335577", "Yr191261", 
-                "123", "4567", "4321", "1245", "2812", 
-                "6479", "4573", "7465"  // הוספנו את הסיסמה החדשה כאן
+                "123", "4567", "4321", "1245", "2812"
             ];
             const redirectUrl = "https://sites.google.com/view/roth-cinema/home";
 
@@ -112,7 +71,6 @@
                 status.style.color = "green";
                 setTimeout(() => {
                     window.location.href = redirectUrl;
->>>>>>> 7d8e97be69e9c22f1f49468580b534d5e2359f6f
                 }, 1000);
             } else {
                 status.innerHTML = "❌";
@@ -122,27 +80,11 @@
                 }, 2000);
             }
         }
-
-        function startScanForIphone() {
-            if (window.NFCReader) {
-                startScan();
-            } else {
-                alert("הדפדפן שלך לא תומך ב-NFC או שהמכשיר שלך לא תומך בטכנולוגיה.");
-            }
-        }
-
-        if ("NDEFReader" in window) {
-            window.addEventListener("load", function() {
-                const scanButton = document.getElementById("scanButton");
-                scanButton.onclick = startScanForIphone;
-            });
-        }
     </script>
 </head>
 <body>
     <h1>יש להצמיד כרטיס רוט סינמה</h1>
-    <button id="scanButton">לסריקה לחץ עלי</button>
+    <button id="scanButton" onclick="startScan()">לסריקה לחץ עלי</button>
     <div id="status"></div>
 </body>
 </html>
-
