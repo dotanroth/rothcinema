@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>טלמסר</title>
+    <title>טל מסר רוט סינמה</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-    <h1>טלמסר</h1>
+    <h1>טלמסר רוט סינמה</h1>
     <p>לחץ על מספר כדי לבצע פעולה</p>
     <button onclick="handleAction(1)">1</button>
     <button onclick="handleAction(2)">2</button>
@@ -57,12 +57,11 @@
 
         // Send SMS request (simulated with alert for now, as browsers can't send SMS directly)
         function sendSmsRequest() {
-            const phoneNumber = "0502517072"; // User's phone number
             const message = "אני מבקש החזר כספי";
             const targetNumber = "0552869685"; // The number to send the SMS to
 
             // In a real-world scenario, you would need to integrate with an SMS API to send messages
-            alert(`Sending SMS to ${targetNumber} with the message: "${message}" from phone number ${phoneNumber}`);
+            alert(`Sending SMS to ${targetNumber} with the message: "${message}"`);
             // Since JavaScript can't send SMS directly, consider using an external SMS API
         }
 
