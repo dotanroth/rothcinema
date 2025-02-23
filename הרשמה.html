@@ -8,65 +8,75 @@
         body {
             font-family: Arial, sans-serif;
             direction: rtl;
-            text-align: center;
-            margin: 50px;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        form {
-            display: inline-block;
-            text-align: right;
-            background: #f8f8f8;
-            padding: 20px;
+        .container {
+            background-color: white;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
         }
         input {
-            display: block;
             width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
         }
         button {
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
             width: 100%;
-        }
-        #finishButton {
-            background: #28a745;
-            display: none; /* כפתור סיום מוסתר בהתחלה */
-            margin-top: 10px;
-            cursor: not-allowed; /* כפתור חסום בהתחלה */
-        }
-        #finishButton.active {
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
             cursor: pointer;
-            display: block;
+        }
+        button:disabled {
+            background-color: #ccc;
         }
     </style>
 </head>
 <body>
-    <h2>הרשמה ל-Root Cinema</h2>
-    <form id="registrationForm">
-        <label>שם פרטי:</label>
-        <input type="text" name="first_name" required>
-        
-        <label>שם משפחה:</label>
-        <input type="text" name="last_name" required>
-        
-        <label>טלפון:</label>
-        <input type="tel" name="phone" required pattern="[0-9]{10}">
-        
-        <label>אימייל:</label>
-        <input type="email" name="email" required>
-        
-        <label>סיסמה (לפחות 4 תווים שהם מספרים או אותיות):</label>
-        <input type="password" name="password" id="password" required>
-        
-        <button id="submitButton" type="submit">הרשמה</button>
-        <!-- כפתור סיום מוסתר בהתחלה -->
-        <button id="finishButton" type="button" onclick="window.location.href='https://sites.google.com/view/roth-cinema/home'" disabled>סיום</button>
-    </form>
+    <div class="container">
+        <h2>הרשמה ל-Root Cinema</h2>
+        <form id="registrationForm">
+            <label>שם פרטי:</label>
+            <input type="text" name="first_name" required>
+
+            <label>שם משפחה:</label>
+            <input type="text" name="last_name" required>
+
+            <label>טלפון:</label>
+            <input type="tel" name="phone" required pattern="[0-9]{10}">
+
+            <label>אימייל:</label>
+            <input type="email" name="email" required>
+
+            <label>סיסמה:</label>
+            <input type="password" name="password" id="password" required>
+
+            <button id="finishButton" type="button" disabled>סיום</button>
+        </form>
+    </div>
 
     <script>
         document.getElementById("registrationForm").addEventListener("input", function() {
@@ -76,25 +86,31 @@
             var phone = document.querySelector('input[name="phone"]').value;
             var email = document.querySelector('input[name="email"]').value;
 
-            // בדיקת אם כל השדות מלאים והסיסמה תקינה
             var passwordPattern = /^[A-Za-z0-9]{4,}$/;
             var allFieldsFilled = firstName && lastName && phone && email && password;
             var passwordValid = passwordPattern.test(password);
 
-            // אם כל השדות מלאים והסיסמה תקינה, נוכל להפעיל את כפתור "סיום"
             if (allFieldsFilled && passwordValid) {
                 document.getElementById("finishButton").disabled = false;
-                document.getElementById("finishButton").classList.add("active");
             } else {
                 document.getElementById("finishButton").disabled = true;
-                document.getElementById("finishButton").classList.remove("active");
             }
         });
 
-        // כאשר לוחצים על כפתור "סיום", המשתמש מועבר לדף הרצוי
         document.getElementById("finishButton").onclick = function() {
-            window.location.href = 'https://sites.google.com/view/roth-cinema/home';
+            // יצירת פרמטרים מהטופס
+            var form = document.getElementById("registrationForm");
+            var formData = new FormData(form);
+            var queryParams = [];
+            formData.forEach(function(value, key) {
+                queryParams.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+            });
+            var queryString = queryParams.join("&");
+
+            // העברת הנתונים לדף החדש באמצעות פרמטרים ב-URL
+            window.location.href = "confirmation.html?" + queryString;
         };
     </script>
 </body>
 </html>
+
