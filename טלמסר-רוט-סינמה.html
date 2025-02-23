@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טלמסר</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>טלמסר</h1>
+    <p>לחץ על מספר כדי לבצע פעולה</p>
+    <button onclick="handleAction(1)">1</button>
+    <button onclick="handleAction(2)">2</button>
+    <button onclick="handleAction(3)">3</button>
+    <button onclick="handleAction(4)">4</button>
+    <button onclick="handleAction(5)">5</button>
+    <button onclick="handleAction(6)">6</button>
+    <button onclick="handleAction(7)">7</button>
+    <button onclick="handleAction(8)">8</button>
+    <button onclick="handleAction(9)">9</button>
+    
+    <script>
+        // Handle the action for each button press
+        function handleAction(buttonNumber) {
+            switch(buttonNumber) {
+                case 1:
+                    sendSmsRequest();
+                    break;
+                case 2:
+                    window.location.href = "https://sites.google.com/view/roth-cinema/home";
+                    break;
+                case 3:
+                    makeCall();
+                    break;
+                case 4:
+                    window.location.href = "https://sites.google.com/view/rothcinema/home";
+                    break;
+                case 5:
+                    window.location.href = "https://dotanroth.github.io/rothcinema/dotan.html";
+                    break;
+                // You can add more cases for buttons 6-9 if needed
+                default:
+                    alert("No action for this number");
+            }
+        }
+
+        // Send SMS request (simulated with alert for now, as browsers can't send SMS directly)
+        function sendSmsRequest() {
+            const phoneNumber = "0502517072"; // User's phone number
+            const message = "אני מבקש החזר כספי";
+            const targetNumber = "0552869685"; // The number to send the SMS to
+
+            // In a real-world scenario, you would need to integrate with an SMS API to send messages
+            alert(`Sending SMS to ${targetNumber} with the message: "${message}" from phone number ${phoneNumber}`);
+            // Since JavaScript can't send SMS directly, consider using an external SMS API
+        }
+
+        // Make a call (simulated with an alert for now, as JavaScript can't make phone calls directly)
+        function makeCall() {
+            const phoneNumbers = ["0552869685", "0552868112"];
+            const selectedNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)]; // Randomly select one of the two numbers
+
+            // Simulate calling by alert (in a real implementation, use a dialer app)
+            alert(`Dialing ${selectedNumber}...`);
+            // In a real environment, you can use a "tel:" link or an API to dial a phone number
+            window.location.href = `tel:${selectedNumber}`;
+        }
+    </script>
+</body>
+</html>
