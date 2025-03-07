@@ -35,11 +35,24 @@
         .highlight:hover {
             color: #1E7B00;
         }
+        #answer {
+            display: none;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <p class="highlight" onclick="window.location.href='https://www.example.com/answer.html'">אני תמיד איתך, אך אף פעם לא רואים אותי. אני לא עוזב אותך, אך אני לא נוגע בך. מה אני?</p>
+        <p class="highlight" onclick="showAnswer()">אני תמיד איתך, אך אף פעם לא רואים אותי. אני לא עוזב אותך, אך אני לא נוגע בך. מה אני?</p>
+        <p id="answer">תשובה: רוח.</p>
     </div>
+
+    <script>
+        function showAnswer() {
+            document.getElementById('answer').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
